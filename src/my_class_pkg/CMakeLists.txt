@@ -15,6 +15,8 @@ find_package(catkin REQUIRED COMPONENTS
   actionlib
   actionlib_msgs
   dynamic_reconfigure
+  tf2_ros
+  upros_message
 )
 
 ## System dependencies are found with CMake's conventions
@@ -117,6 +119,7 @@ generate_messages(
 catkin_package(
 CATKIN_DEPENDS message_runtime
 actionlib actionlib_msgs
+CATKIN_DEPENDS roscpp std_msgs upros_message
 #  INCLUDE_DIRS include
 #  LIBRARIES my_class_pkg
 #  CATKIN_DEPENDS roscpp rospy std_msgs
@@ -130,8 +133,9 @@ actionlib actionlib_msgs
 ## Specify additional locations of header files
 ## Your package locations should be listed before other locations
 include_directories(
-# include
+include
   ${catkin_INCLUDE_DIRS}
+
 )
 
 ## Declare a C++ library
@@ -256,4 +260,8 @@ add_dependencies(ros_dynamic_speed_node my_class_pkg_gencfg)
 target_link_libraries(ros_dynamic_speed_node ${catkin_LIBRARIES} ${upros_message_LIBRARIES})
 add_executable(ros_log src/ros_log.cpp)
 target_link_libraries(ros_log ${catkin_LIBRARIES})
+add_dependencies(ros_action_server ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
+add_dependencies(ros_action_client ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
+add_executable(tag_grab_node src/tag_grab.cpp)
+target_link_libraries(tag_grab_node ${catkin_LIBRARIES})
 
