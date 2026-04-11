@@ -1,0 +1,29 @@
+<launch>
+  <!-- 1. 参数设置 -->
+  <arg name="model" default="$(find hzj_robot_description)/urdf/w2a_arm.xacro"/>
+  <arg name="gui" default="true"/>
+  <arg name="paused" default="false"/>
+  <arg name="use_ros_control" default="true"/>
+
+  <!-- 2. 启动Gazebo空世界 -->
+  <include file="$(find gazebo_ros)/launch/empty_world.launch">
+    <arg name="paused" value="$(arg paused)"/>
+    <arg name="gui" value="$(arg gui)"/>
+  </include>
+
+  <!-- 3. 解析XACRO生成URDF，发布robot_description -->
+  <param name="robot_description" command="$(find xacro)/xacro '$(arg model)'"/>
+
+  <!-- 4. 启动机器人状态发布器（TF变换） -->
+  <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" output="screen">
+    <param name="publish_frequency" value="50.0"/>
+  </node>
+
+
+  <!-- 6. 将机械臂Spawn到Gazebo中 -->
+  <node name="spawn_urdf" pkg="gazebo_ros" type="spawn_model" args="-param robot_description -urdf -model s2a_arm" output="screen"/>
+
+  <!-- 7. 启动ros_control的关节轨迹控制器（核心：支持rqt控制） -->
+  <rosparam file="$(find hzj_robot_description)/config/joint_trajectory_controller.yaml" command="load"/>
+  <node name="controller_spawner" pkg="controller_manager" type="spawner" args="joint_state_controller arm_joint_trajectory_controller" output="screen"/>
+</launch>

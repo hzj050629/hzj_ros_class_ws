@@ -1,0 +1,137 @@
+<?xml version="1.0"?>
+<robot name="mobile_base" xmlns:xacro="http://ros.org/wiki/xacro">
+
+  <!-- 差速驱动控制器 -->
+  <gazebo>
+    <plugin name="differential_drive_controller" filename="libgazebo_ros_diff_drive.so">
+      <alwaysOn>true</alwaysOn>
+      <leftJoint>base_to_left_wheel</leftJoint>
+      <rightJoint>base_to_right_wheel</rightJoint>
+      <wheelSeparation>0.24</wheelSeparation>
+      <wheelDiameter>0.2</wheelDiameter>
+      <torque>10</torque>
+      <commandTopic>cmd_vel</commandTopic>
+      <odometryTopic>odom</odometryTopic>
+      <odometryFrame>odom</odometryFrame>
+      <robotBaseFrame>base_link</robotBaseFrame>
+    </plugin>
+  </gazebo>
+
+  <!-- 底盘 base_link -->
+  <link name="base_link">
+    <inertial>
+      <mass value="5.0"/>
+      <inertia ixx="0.1" ixy="0.0" ixz="0.0" iyy="0.2" iyz="0.0" izz="0.2"/>
+    </inertial>
+    <visual>
+      <geometry>
+        <box size="0.4 0.2 0.1"/>
+      </geometry>
+      <origin rpy="0 0 0" xyz="0 0 0.05"/>
+      <material name="red">
+        <color rgba="1 0 0 1"/>
+      </material>
+    </visual>
+    <collision>
+      <geometry>
+        <box size="0.4 0.2 0.1"/>
+      </geometry>
+      <origin rpy="0 0 0" xyz="0 0 0.05"/>
+    </collision>
+  </link>
+
+  <!-- 左轮 wheel_left_link -->
+  <link name="wheel_left_link">
+    <inertial>
+      <mass value="0.5"/>
+      <inertia ixx="0.005" ixy="0.0" ixz="0.0" iyy="0.005" iyz="0.0" izz="0.001"/>
+    </inertial>
+    <visual>
+      <geometry>
+        <cylinder length="0.04" radius="0.1"/>
+      </geometry>
+      <origin rpy="1.5708 0 0" xyz="0 -0.03 0"/>
+      <material name="green">
+        <color rgba="0 1 0 1"/>
+      </material>
+    </visual>
+    <collision>
+      <geometry>
+        <cylinder length="0.04" radius="0.1"/>
+      </geometry>
+      <origin rpy="1.5708 0 0" xyz="0 -0.03 0"/>
+    </collision>
+  </link>
+
+  <!-- 右轮 wheel_right_link -->
+  <link name="wheel_right_link">
+    <inertial>
+      <mass value="0.5"/>
+      <inertia ixx="0.005" ixy="0.0" ixz="0.0" iyy="0.005" iyz="0.0" izz="0.001"/>
+    </inertial>
+    <visual>
+      <geometry>
+        <cylinder length="0.04" radius="0.1"/>
+      </geometry>
+      <origin rpy="1.5708 0 0" xyz="0 0.03 0"/>
+      <material name="black">
+        <color rgba="0 0 0 1"/>
+      </material>
+    </visual>
+    <collision>
+      <geometry>
+        <cylinder length="0.04" radius="0.1"/>
+      </geometry>
+      <origin rpy="1.5708 0 0" xyz="0 0.03 0"/>
+    </collision>
+  </link>
+
+  <!-- 万向轮 caster_link -->
+  <link name="caster_link">
+    <inertial>
+      <mass value="0.2"/>
+      <inertia ixx="0.001" ixy="0.0" ixz="0.0" iyy="0.001" iyz="0.0" izz="0.001"/>
+    </inertial>
+    <visual>
+      <geometry>
+        <sphere radius="0.05"/>
+      </geometry>
+      <origin rpy="0 0 0" xyz="-0.05 0 0"/>
+      <material name="black">
+        <color rgba="0 0 0 1"/>
+      </material>
+    </visual>
+    <collision>
+      <geometry>
+        <sphere radius="0.05"/>
+      </geometry>
+      <origin rpy="0 0 0" xyz="-0.05 0 0"/>
+    </collision>
+  </link>
+
+  <!-- 底盘-左轮关节 -->
+  <joint name="base_to_left_wheel" type="revolute">
+    <parent link="base_link"/>
+    <child link="wheel_left_link"/>
+    <origin rpy="0 0 0" xyz="-0.1 0.15 0"/>
+    <axis xyz="0 1 0"/>
+    <limit effort="100" lower="-1e16" upper="1e16" velocity="10"/>
+  </joint>
+
+  <!-- 底盘-右轮关节 -->
+  <joint name="base_to_right_wheel" type="revolute">
+    <parent link="base_link"/>
+    <child link="wheel_right_link"/>
+    <origin rpy="0 0 0" xyz="-0.1 -0.15 0"/>
+    <axis xyz="0 1 0"/>
+    <limit effort="100" lower="-1e16" upper="1e16" velocity="10"/>
+  </joint>
+
+  <!-- 底盘-万向轮关节 -->
+  <joint name="base_to_caster" type="fixed">
+    <parent link="base_link"/>
+    <child link="caster_link"/>
+    <origin rpy="0 0 0" xyz="0.2 0 -0.05"/>
+  </joint>
+
+</robot>
