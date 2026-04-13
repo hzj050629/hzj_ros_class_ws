@@ -264,4 +264,10 @@ add_dependencies(ros_action_server ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_
 add_dependencies(ros_action_client ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 add_executable(tag_grab_node src/tag_grab.cpp)
 target_link_libraries(tag_grab_node ${catkin_LIBRARIES})
+add_executable(odom_move src/odom_move.cpp)
+target_link_libraries(odom_move ${catkin_LIBRARIES})
+add_executable(ros_scan_node src/ros_scan.cpp)
+target_link_libraries(ros_scan_node ${catkin_LIBRARIES})
+add_executable(ros_avoid_node src/ros_avoid.cpp)
+target_link_libraries(ros_avoid_node ${catkin_LIBRARIES})
 
