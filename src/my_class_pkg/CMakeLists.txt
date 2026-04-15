@@ -17,6 +17,7 @@ find_package(catkin REQUIRED COMPONENTS
   dynamic_reconfigure
   tf2_ros
   upros_message
+  move_base_msgs
 )
 
 ## System dependencies are found with CMake's conventions
@@ -270,4 +271,6 @@ add_executable(ros_scan_node src/ros_scan.cpp)
 target_link_libraries(ros_scan_node ${catkin_LIBRARIES})
 add_executable(ros_avoid_node src/ros_avoid.cpp)
 target_link_libraries(ros_avoid_node ${catkin_LIBRARIES})
+add_executable(movebase_client_node src/movebase_client.cpp)
+target_link_libraries(movebase_client_node ${catkin_LIBRARIES})
 
