@@ -56,5 +56,9 @@
 第六周
 1.激光雷达获取信息：rosrun my_class_pkg ros_scan_node
 2.激光雷达避障：rosrun my_class_pkg ros_avoid_node
+<<<<<<< HEAD
 3.自主导航：roslaunch upros_bringup bringup_w2a.launch      roslaunch upros_navigation navigation.launch     roslaunch upros_navigation view_nav.launch    rosrun my_class_pkg movebase_client_node
 
+=======
+3.自助导航：roslaunch upros_bringup bringup_w2a.launch      roslaunch upros_navigation navigation.launch     roslaunch upros_navigation view_nav.launch    rosrun my_class_pkg movebase_client_node
+>>>>>>> 661b24a87b2b37ea24665ebea0c7298b4725a179
